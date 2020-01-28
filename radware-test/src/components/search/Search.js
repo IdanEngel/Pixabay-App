@@ -2,64 +2,72 @@ import React, { Component } from 'react'
 import TextField from 'material-ui/TextField'
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
-import axios from 'axios'
+import axios from 'axios';
+import { useSelector, useDispatch } from 'react-redux'
 import ImageResults from '../image-results/ImageResults'
+import { onTextChange } from '../../actions/index'
 
-class Search extends Component {
-    state = {
-        searchText: '',
-        amount: 15,
-        apiUrl: 'https://pixabay.com/api',
-        apiKey: '15046474-df1fc030477aaa076ba54d6e9',
-        images: []
-    }
+function Search() {
+    // constructor(props) {
+    //     super(props)
+    //     searchState = useSelector(state => state)
 
-    onTextChange = e => {
+    // }
+    const dispatch = useDispatch()
+    const searchState = useSelector(state => state.counter)
+    // state = {
+    //     searchText: '',
+    //     amount: 15,
+    //     apiUrl: 'https://pixabay.com/api',
+    //     apiKey: '15046474-df1fc030477aaa076ba54d6e9',
+    //     images: []
+    // }
+
+
+    const onTextChange = e => {
         const val = e.target.value
-        this.setState({ [e.target.name]: val }, () => {
-            if (val === '') {
-                this.setState({ images: [] })
-            } else {
-                axios.get(
-                    `${this.state.apiUrl}/?key=${this.state.apiKey}&q=${
-                    this.state.searchText
-                    }&img_type=photo
-                    &per_page=${this.state.amount}&safesearch=true`)
-                    .then(res => this.setState({ images: res.data.hits }))
-                    .catch(err => console.log(err))
-            }
-        })
+        searchState[e.target.name] = val
+        if (val === '') {
+            searchState.images = []
+        } else {
+            axios.get(
+                `${searchState.apiUrl}/?key=${searchState.apiKey}&q=${
+                searchState.searchText
+                }&img_type=photo
+                    &per_page=${ searchState.amount}&safesearch=true`)
+                .then(res => searchState.images = res.data.hits)
+                .catch(err => console.log(err))
+
+        }
     }
 
-    onAmountChange = (e, index, value) => this.setState({ amount: value })
+    const onAmountChange = (e, index, value) => searchState.amount = value
 
-    render() {
-        console.log(this.state.images);
-        return (
-            <div>
-                <TextField
-                    name="searchText"
-                    value={this.state.searchText}
-                    onChange={this.onTextChange}
-                    floatingLabelText="Search for Images"
-                    fullWidth={true}
-                />
-                <br />
-                <SelectField
-                    floatingLabelText="Amount"
-                    value={this.state.amount}
-                    onChange={this.onAmountChange}
-                >
-                    <MenuItem value={5} primaryText="5" />
-                    <MenuItem value={10} primaryText="10" />
-                    <MenuItem value={15} primaryText="15" />
-                    <MenuItem value={30} primaryText="30" />
-                    <MenuItem value={50} primaryText="50" />
-                </SelectField>
-                <br />
-                {this.state.images.length > 0 ? <ImageResults images={this.state.images} /> : null}
-            </div>
-        )
-    }
+    return (
+        <div>
+            <TextField
+                name="searchText"
+                value={searchState.searchText}
+                onChange={()=>dispatch(onTextChange)}
+                floatingLabelText="Search for Images"
+                fullWidth={true}
+            />
+            <br />
+            <SelectField
+                floatingLabelText="Amount"
+                value={searchState.amount}
+                onChange={onAmountChange}
+            >
+                <MenuItem value={5} primaryText="5" />
+                <MenuItem value={10} primaryText="10" />
+                <MenuItem value={15} primaryText="15" />
+                <MenuItem value={30} primaryText="30" />
+                <MenuItem value={50} primaryText="50" />
+            </SelectField>
+            <br />
+            {searchState.images.length > 0 ? <ImageResults images={searchState.images} /> : null}
+        </div>
+    )
 }
+
 export default Search
