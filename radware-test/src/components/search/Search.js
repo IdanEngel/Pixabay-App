@@ -5,37 +5,33 @@ import MenuItem from 'material-ui/MenuItem'
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux'
 import ImageResults from '../image-results/ImageResults'
-import { onTextChange } from '../../actions/index'
 
 function Search() {
-    // constructor(props) {
-    //     super(props)
-    //     searchState = useSelector(state => state)
-
-    // }
+ 
     const dispatch = useDispatch()
-    const searchState = useSelector(state => state.counter)
-    // state = {
-    //     searchText: '',
-    //     amount: 15,
-    //     apiUrl: 'https://pixabay.com/api',
-    //     apiKey: '15046474-df1fc030477aaa076ba54d6e9',
-    //     images: []
-    // }
-
-
+    const searchState = useSelector(state => state.search)
+ 
     const onTextChange = e => {
         const val = e.target.value
-        searchState[e.target.name] = val
+        dispatch({
+            type: 'onTextChange',
+            payload: val
+        })
         if (val === '') {
-            searchState.images = []
+            dispatch({
+                type: 'imageHandler',
+                payload: []
+            })
         } else {
             axios.get(
                 `${searchState.apiUrl}/?key=${searchState.apiKey}&q=${
-                searchState.searchText
+                val
                 }&img_type=photo
                     &per_page=${ searchState.amount}&safesearch=true`)
-                .then(res => searchState.images = res.data.hits)
+                .then(res => dispatch({
+                    type: 'imageHandler',
+                    payload: res.data.hits
+                }))
                 .catch(err => console.log(err))
 
         }
@@ -48,7 +44,7 @@ function Search() {
             <TextField
                 name="searchText"
                 value={searchState.searchText}
-                onChange={()=>dispatch(onTextChange)}
+                onChange={onTextChange}
                 floatingLabelText="Search for Images"
                 fullWidth={true}
             />
