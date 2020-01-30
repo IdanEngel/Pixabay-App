@@ -7,10 +7,10 @@ import { useSelector, useDispatch } from 'react-redux'
 import ImageResults from '../image-results/ImageResults'
 
 function Search() {
- 
+
     const dispatch = useDispatch()
     const searchState = useSelector(state => state.search)
- 
+
     const onTextChange = e => {
         const val = e.target.value
         dispatch({
@@ -37,7 +37,12 @@ function Search() {
         }
     }
 
-    const onAmountChange = (e, index, value) => searchState.amount = value
+    const onAmountChange = (e, index, value) => {
+        dispatch({
+            type: 'amountHandler',
+            payload: value
+        })
+    }
 
     return (
         <div>

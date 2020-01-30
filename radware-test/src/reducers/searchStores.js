@@ -21,6 +21,11 @@ const searchReducer = (state = initialState, action) => {
                 ...state,
                 images: action.payload
             }
+        case 'amountHandler':
+            return {
+                ...state,
+                amount: action.payload
+            }
         default:
             return state
     }

@@ -1,21 +1,22 @@
 let initialState = {
-    favorite: ''
+    favorits: []
 }
 
 
 const favoriteReducer = (state = initialState, action) => {
     switch (action.type) {
 
-        case 'onTextChange':
+        case 'addToFavorits':
             return {
                 ...state,
-                searchText: action.payload
+                favorits: [...state.favorits, action.newItem]
             }
-        case 'imageHandler':
+        case 'deleteFromFavorits':
             return {
                 ...state,
-                images: action.payload
+                favorits: state.favorits.filter(item => item !== action.payload)
             }
+
         default:
             return state
     }

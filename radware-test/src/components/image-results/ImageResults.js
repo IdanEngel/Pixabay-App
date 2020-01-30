@@ -1,23 +1,49 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import { GridList, GridTile } from 'material-ui/GridList'
 import IconButton from 'material-ui/IconButton'
 import ActionGrade from 'material-ui/svg-icons/action/grade';
+import ZoomIn from 'material-ui/svg-icons/action/zoom-in'
 import { useSelector, useDispatch } from 'react-redux'
-
-// import Dialog from 'material-ui/Dialog'
-// import FlatButton from 'material-ui/FlatButton'
+import Dialog from 'material-ui/Dialog'
+import FlatButton from 'material-ui/FlatButton'
 
 function ImageResults() {
 
     const dispatch = useDispatch()
     const searchState = useSelector(state => state.search)
+    const imageState = useSelector(state => state.images)
 
     const addToFavorits = (img) => {
-        console.log(img);
+        dispatch({
+            type: 'addToFavorits',
+            newItem: img
+        })
+        handleOpen(img.largeImageURL)
     }
-    console.log(searchState.images);
 
+    const handleOpen = img => {
+        dispatch({
+            type: 'modalHandler',
+            payload: true,
+        })
+        dispatch({
+            type: 'currentImageHandler',
+            payload: img,
+        })
+    }
+
+    const handleClose = (img) => {
+        dispatch({
+            type: 'modalHandler',
+            payload: false,
+        })
+        
+        setTimeout(()=>{
+            alert(`The picture is added to your Favorits!`);
+        },200)
+
+    }
 
     let imageListContent;
     const images = searchState.images;
@@ -34,25 +60,38 @@ function ImageResults() {
                             </span>
                         }
                         actionIcon={
-                            <IconButton onClick={() => this.addToFavorits(img)} tooltip="Add to favorits" touch={true} tooltipPosition="top-left">
+                            <IconButton onClick={() => addToFavorits(img)} tooltip="Add to favorits" touch={true} tooltipPosition="top-left" actio>
                                 <ActionGrade color='gold' />
                             </IconButton>
                         }
                     >
                         <img src={img.largeImageURL} alt="" />
-                        
+
                     </GridTile>
                 ))}
             </GridList>
         )
     }
+
+    const actions = [
+        <FlatButton label="Close" primary={true} onClick={() => handleClose()} />
+    ]
+
     return (
         <div>
             {imageListContent}
+            <Dialog
+                actions={actions}
+                modal={false}
+                open={imageState.open}
+                onRequestClose={handleClose}
+            >
+                <img src={imageState.currentImage} alt="" style={{ width: '100%' }} />
+
+            </Dialog>
         </div>
     )
 }
-
 
 ImageResults.propTypes = {
     images: PropTypes.array.isRequired
