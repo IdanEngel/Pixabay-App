@@ -1,5 +1,9 @@
 let initialState = {
-    favorits: []
+    favorits: [],
+    editOrDelete: true,
+    willEdit: false,
+    saveClick: false,
+    changedPictureValue: ''
 }
 
 
@@ -15,6 +19,26 @@ const favoriteReducer = (state = initialState, action) => {
             return {
                 ...state,
                 favorits: state.favorits.filter(item => item !== action.payload)
+            }
+        case 'buttonHandler':
+            return {
+                ...state,
+                editOrDelete: action.payload
+            }
+        case 'editValue':
+            return {
+                ...state,
+                willEdit: action.payload
+            }
+        case 'valueChange':
+            return {
+                ...state,
+                changedPictureValue: action.payload
+            }
+        case 'saveClick':
+            return {
+                ...state,
+                saveClick: action.payload
             }
 
         default:

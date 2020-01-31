@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import { GridList, GridTile } from 'material-ui/GridList'
 import IconButton from 'material-ui/IconButton'
 import ActionGrade from 'material-ui/svg-icons/action/grade';
-import ZoomIn from 'material-ui/svg-icons/action/zoom-in'
 import { useSelector, useDispatch } from 'react-redux'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
