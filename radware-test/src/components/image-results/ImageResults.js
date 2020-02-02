@@ -18,6 +18,10 @@ function ImageResults() {
             type: 'addToFavorits',
             newItem: img
         })
+        dispatch({
+            type: 'saveClick',
+            payload: false
+        })
         handleOpen(img.largeImageURL)
     }
 

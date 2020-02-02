@@ -26,6 +26,7 @@ const searchReducer = (state = initialState, action) => {
                 ...state,
                 amount: action.payload
             }
+       
         default:
             return state
     }

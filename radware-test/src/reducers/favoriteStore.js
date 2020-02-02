@@ -40,6 +40,16 @@ const favoriteReducer = (state = initialState, action) => {
                 ...state,
                 saveClick: action.payload
             }
+        case 'imageTagUpdate':
+            return {
+                ...state,
+                favorits: state.favorits.map(item => {
+                    if (item.tags === action.chosen && action.payload !== '') {
+                        item.tags = action.payload
+                    }
+                    return item
+                })
+            }
 
         default:
             return state

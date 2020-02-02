@@ -32,7 +32,10 @@ function Favorits() {
         })
     }
 
-    const headerValueChange = e => {
+    const headerValueChange = (e, img) => {
+        console.log(e.target.value);
+        console.log(searchState.images);
+        
         dispatch({
             type: 'valueChange',
             payload: e.target.value
@@ -45,7 +48,12 @@ function Favorits() {
             payload: !favoriteState.editOrDelete
         })
     }
-    const headerChange = () => {
+    const headerChange = img => {
+        dispatch({
+            type: 'imageTagUpdate',
+            chosen: img.tags,
+            payload: favoriteState.changedPictureValue
+        })
         dispatch({
             type: 'saveClick',
             payload: true
@@ -67,11 +75,8 @@ function Favorits() {
                             <TextField
                                 defaultValue={img.tags}
                                 onChange={headerValueChange}
-                                className={'duy'}
-                            /> :
-                            favoriteState.saveClick ?
-                                favoriteState.changedPictureValue :
-                                img.tags}
+                                className={'inputChange'}
+                            /> : img.tags}
                         key={img.id}
                         subtitle={
                             <span>
@@ -81,7 +86,7 @@ function Favorits() {
                         actionIcon={
                             favoriteState.editOrDelete ?
                                 favoriteState.willEdit ?
-                                    <IconButton onClick={headerChange}
+                                    <IconButton onClick={() => headerChange(img)}
                                         tooltip="Save" touch={true} tooltipPosition="top-left">
                                         <Done color='white' />
                                     </IconButton> :
