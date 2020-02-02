@@ -6,6 +6,7 @@ import ActionGrade from 'material-ui/svg-icons/action/grade';
 import { useSelector, useDispatch } from 'react-redux'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
+import './ImageResults.css'
 
 function ImageResults() {
 
@@ -52,7 +53,7 @@ function ImageResults() {
     const images = searchState.images;
     if (images) {
         imageListContent = (
-            <GridList cols={3} >
+            <GridList className='picDisplay' cols={3} >
                 {images.map(img => (
                     <GridTile
                         title={img.tags}
