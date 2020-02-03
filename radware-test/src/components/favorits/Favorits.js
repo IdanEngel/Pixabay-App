@@ -65,7 +65,7 @@ function Favorits() {
 
     }
 
-
+//comment
     if (images) {
         favoritsContent = (
             <GridList cols={3} >
